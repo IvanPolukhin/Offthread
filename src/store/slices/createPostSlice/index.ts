@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand/vanilla';
 import { PostSlice } from './types';
 import { StoreState } from 'src/store/types';
-import { Post } from 'src/types';
+import { db } from 'src/db';
 
 export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
   set,
@@ -12,19 +12,24 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
   isLoading: false,
   error: null,
   fetchNextPage: async () => {
-    const { page, posts } = get();
+    const { posts, page } = get();
     set({ isLoading: true, error: null });
+
     try {
-      const res = await fetch(`/api/posts?page=${page + 1}`);
-      const newPosts: Post[] = await res.json();
+      const newPosts = await db.posts
+        .orderBy('id')
+        .offset(posts.length)
+        .limit(10)
+        .toArray();
+
       set({
         posts: [...posts, ...newPosts],
         page: page + 1,
         isLoading: false,
       });
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-      set({ isLoading: false, error: 'Failed to load posts' });
+    } catch (e) {
+      console.error('Error fetching posts:', e);
+      set({ isLoading: false, error: 'Failed to load posts from DB' });
     }
   },
 });
