@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand/vanilla';
-import { PostSlice } from 'src/store/slices/createPostSlice/types.ts';
-import { StoreState } from 'src/store/types.ts';
+import { PostSlice } from './types';
+import { StoreState } from 'src/store/types';
 import { Post } from 'src/types';
 
 export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
@@ -10,15 +10,21 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
   posts: [],
   page: 1,
   isLoading: false,
+  error: null,
   fetchNextPage: async () => {
     const { page, posts } = get();
-    set({ isLoading: true });
-    const res = await fetch(`/api/posts?page=${page + 1}`);
-    const newPosts: Post[] = await res.json();
-    set({
-      posts: [...posts, ...newPosts],
-      page: page + 1,
-      isLoading: false,
-    });
+    set({ isLoading: true, error: null });
+    try {
+      const res = await fetch(`/api/posts?page=${page + 1}`);
+      const newPosts: Post[] = await res.json();
+      set({
+        posts: [...posts, ...newPosts],
+        page: page + 1,
+        isLoading: false,
+      });
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      set({ isLoading: false, error: 'Failed to load posts' });
+    }
   },
 });

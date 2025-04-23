@@ -1,4 +1,6 @@
 export type Post = {
-  id: number;
+  id?: number;
+  title: string;
   content: string;
+  date: string;
 };

@@ -4,5 +4,6 @@ export type PostSlice = {
   posts: Post[];
   page: number;
   isLoading: boolean;
+  error: string | null;
   fetchNextPage: () => void;
 };
