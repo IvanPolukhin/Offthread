@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand/vanilla';
-import { PostSlice } from './types';
 import { StoreState } from 'src/store/types';
+import { PostSlice } from 'src/store/slices/createPostSlice/types.ts';
 import { db } from 'src/db';
 
 export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
