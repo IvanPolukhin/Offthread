@@ -7,8 +7,8 @@ export class OffthreadDB extends Dexie {
   localChanges!: Table<LocalChange, number>;
   constructor() {
     super('offthread');
-    this.version(2).stores({
-      posts: '++id, title, content, date',
+    this.version(4).stores({
+      posts: '++id, title, content, date, status',
       localChanges: '++id, type, entity',
     });
   }

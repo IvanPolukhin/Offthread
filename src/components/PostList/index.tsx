@@ -14,7 +14,7 @@ const PostList = () => {
       {error && <div className="text-red-500">{error}</div>}
       {posts.map((post) => (
         <div
-          key={post.id}
+          key={post.id }
           className="rounded-xl bg-gray-100 p-4 dark:bg-zinc-800"
         >
           <h2 className="text-lg font-semibold">{post.title}</h2>

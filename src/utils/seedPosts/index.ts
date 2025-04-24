@@ -9,6 +9,7 @@ export const seedPosts = async () => {
         title: `Post title #${i + 1}`,
         content: `Post content #${i + 1}`,
         date: new Date().toISOString(),
+        status: 'offline'
       })),
     );
   }
