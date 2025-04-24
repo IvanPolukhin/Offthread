@@ -3,6 +3,7 @@ import { StoreState } from 'src/store/types';
 import { PostSlice } from 'src/store/slices/createPostSlice/types.ts';
 import { db } from 'src/db';
 import { Post } from 'src/types';
+import { sortPosts } from 'src/utils/sortPosts';
 
 export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
   set,
@@ -23,10 +24,12 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
         .limit(10)
         .toArray();
 
-      const sortedPosts = [
-        ...newPosts.filter((post) => post.status === 'pending'),
-        ...newPosts.filter((post) => post.status !== 'pending'),
-      ]
+      const uniqueNewPosts = newPosts.filter(
+        (newPost) => !posts.some((post) => post.id === newPost.id),
+      );
+
+      const mergedPosts = [...posts, ...uniqueNewPosts];
+      const sortedPosts = sortPosts(mergedPosts);
 
       set({
         posts: [...posts, ...sortedPosts],
@@ -49,10 +52,13 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
       };
 
       const id = await db.posts.add(completePost);
-
       const savedPost: Post = { ...completePost, id };
+
+      const newPosts = [savedPost, ...posts];
+      const sortedPosts = sortPosts(newPosts);
+
       set({
-        posts: [savedPost, ...posts],
+        posts: sortedPosts,
       });
 
       await db.localChanges.add({
