@@ -3,6 +3,8 @@ import { StoreState } from 'src/store/types.ts';
 import { SyncSlice } from 'src/store/slices/createSyncSlice/types.ts';
 import { db } from 'src/db';
 import { sortPosts } from 'src/utils/sortPosts';
+import { collection, addDoc } from 'firebase/firestore';
+import { firestore } from 'src/api/index.ts';
 
 export const createSyncSlice: StateCreator<StoreState, [], [], SyncSlice> = (
   set,
@@ -20,13 +22,21 @@ export const createSyncSlice: StateCreator<StoreState, [], [], SyncSlice> = (
         if (change.type === 'create') {
           const post = change.payload;
 
-          if (!post.id) {
-            post.id = new Date().getTime();
-          }
+          try {
+            const docRef = await addDoc(collection(firestore, 'posts'), {
+              title: post.title,
+              content: post.content,
+              date: post.date,
+            });
 
-          const existingPost = await db.posts.get(post.id);
-          if (!existingPost) {
-            await db.posts.add(post);
+            console.log('Post added with ID:', docRef.id);
+
+            await db.posts.update(post.id!, {
+              status: 'synced',
+              serverId: docRef.id,
+            });
+          } catch (error) {
+            console.error('Failed to upload post to Firestore:', error);
           }
         }
       }

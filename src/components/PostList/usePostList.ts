@@ -10,4 +10,4 @@ export const usePostList = () => {
   }, [fetchNextPage]);
 
   return { posts, isLoading, error, fetchNextPage };
-}
+};

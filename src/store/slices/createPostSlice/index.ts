@@ -28,11 +28,11 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
         (newPost) => !posts.some((post) => post.id === newPost.id),
       );
 
-      const mergedPosts = [...posts, ...uniqueNewPosts];
+      const mergedPosts = [...uniqueNewPosts, ...posts];
       const sortedPosts = sortPosts(mergedPosts);
 
       set({
-        posts: [...posts, ...sortedPosts],
+        posts: sortedPosts,
         page: page + 1,
         isLoading: false,
       });
