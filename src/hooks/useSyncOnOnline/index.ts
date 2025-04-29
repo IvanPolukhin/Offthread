@@ -10,6 +10,8 @@ export const useSyncOnOnline = () => {
       syncChanges().catch(console.error);
     };
 
+    if (navigator.onLine) handleOnline();
+
     window.addEventListener('online', handleOnline);
 
     return () => window.removeEventListener('online', handleOnline);

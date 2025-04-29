@@ -1,6 +1,6 @@
 export type Post = {
   id?: number;
-  serverId?: string;
+  serverId: string;
   title: string;
   content: string;
   date: string;

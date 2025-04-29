@@ -14,6 +14,7 @@ export const useAddPost = () => {
     e.preventDefault();
 
     const newPost: Post = {
+      serverId: `local-${Date.now()}`,
       title,
       content,
       date: new Date().toISOString(),
@@ -25,12 +26,13 @@ export const useAddPost = () => {
     if (navigator.onLine) {
       await syncChanges();
     } else {
-      console.log('The post has been saved offline ');
+      console.log('The post has been saved offline');
     }
 
     setTitle('');
     setContent('');
   };
+
   return {
     title,
     content,
