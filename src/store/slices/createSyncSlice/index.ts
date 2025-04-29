@@ -11,6 +11,7 @@ export const createSyncSlice: StateCreator<StoreState, [], [], SyncSlice> = (
   set,
 ) => ({
   isSyncing: false,
+
   syncChanges: async () => {
     set({ isSyncing: true });
 
@@ -37,12 +38,8 @@ export const createSyncSlice: StateCreator<StoreState, [], [], SyncSlice> = (
               status: 'synced',
             });
 
-            if (
-              localPost.serverId === undefined &&
-              'id' in localPost &&
-              localPost.id
-            ) {
-              await db.posts.delete(localPost.id);
+            if (localPost.serverId) {
+              await db.posts.delete(localPost.serverId);
             }
           } catch (error) {
             console.error('Failed to upload post to Firestore:', error);
@@ -68,7 +65,6 @@ export const createSyncSlice: StateCreator<StoreState, [], [], SyncSlice> = (
       });
 
       await db.posts.clear();
-
       for (const post of postsFromServer) {
         await db.posts.add(post);
       }
