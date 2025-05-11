@@ -7,8 +7,10 @@ export const useSyncOnOnline = () => {
   useEffect(() => {
     const handleOnline = () => {
       console.log('Online - start synchronization...');
-     syncChanges().catch(console.error);
+      syncChanges().catch(console.error);
     };
+
+    if (navigator.onLine) handleOnline();
 
     window.addEventListener('online', handleOnline);
 

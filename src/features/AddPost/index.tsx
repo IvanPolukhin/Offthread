@@ -1,36 +1,7 @@
-import * as React from 'react';
-import { useState } from 'react';
-import { useStore } from 'src/store';
-import { Post } from 'src/types';
+import { useAddPost } from 'src/features/AddPost/useAddPost.ts';
 
 const AddPost = () => {
-  const addPost = useStore((s) => s.addPost);
-  const syncChanges = useStore((s) => s.syncChanges);
-
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const newPost: Post = {
-      title,
-      content,
-      date: new Date().toISOString(),
-      status: 'pending',
-    };
-
-    await addPost(newPost);
-
-    if (navigator.onLine) {
-      await syncChanges();
-    } else {
-      console.log('The post has been saved offline ');
-    }
-
-    setTitle('');
-    setContent('');
-  };
+  const { title, content, handleSubmit, setTitle, setContent } = useAddPost();
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4">

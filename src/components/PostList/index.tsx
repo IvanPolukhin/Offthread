@@ -1,20 +1,14 @@
-import { useEffect } from 'react';
-import { useStore } from 'src/store';
+import { usePostList } from 'src/components/PostList/usePostList.ts';
 
 const PostList = () => {
-  const { posts, isLoading, error } = useStore();
-  const fetchNextPage = useStore((s) => s.fetchNextPage);
-
-  useEffect(() => {
-    fetchNextPage();
-  }, [fetchNextPage]);
+  const { posts, isLoading, error, fetchNextPage } = usePostList();
 
   return (
     <div className="space-y-4 p-4">
       {error && <div className="text-red-500">{error}</div>}
       {posts.map((post) => (
         <div
-          key={post.id }
+          key={post.serverId}
           className="rounded-xl bg-gray-100 p-4 dark:bg-zinc-800"
         >
           <h2 className="text-lg font-semibold">{post.title}</h2>

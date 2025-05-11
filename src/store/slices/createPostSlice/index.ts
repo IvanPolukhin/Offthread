@@ -1,9 +1,9 @@
 import { StateCreator } from 'zustand/vanilla';
 import { StoreState } from 'src/store/types';
-import { PostSlice } from 'src/store/slices/createPostSlice/types.ts';
 import { db } from 'src/db';
 import { Post } from 'src/types';
 import { sortPosts } from 'src/utils/sortPosts';
+import { PostSlice } from 'src/store/slices/createPostSlice/types.ts';
 
 export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
   set,
@@ -13,26 +13,28 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
   page: 1,
   isLoading: false,
   error: null,
+
   fetchNextPage: async () => {
     const { posts, page } = get();
     set({ isLoading: true, error: null });
 
     try {
       const newPosts = await db.posts
-        .orderBy('id')
+        .orderBy('date')
+        .reverse()
         .offset(posts.length)
         .limit(10)
         .toArray();
 
       const uniqueNewPosts = newPosts.filter(
-        (newPost) => !posts.some((post) => post.id === newPost.id),
+        (newPost) => !posts.some((post) => post.serverId === newPost.serverId),
       );
 
       const mergedPosts = [...posts, ...uniqueNewPosts];
       const sortedPosts = sortPosts(mergedPosts);
 
       set({
-        posts: [...posts, ...sortedPosts],
+        posts: sortedPosts,
         page: page + 1,
         isLoading: false,
       });
@@ -41,6 +43,7 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
       set({ isLoading: false, error: 'Failed to load posts from DB' });
     }
   },
+
   addPost: async (newPost: Post) => {
     const { posts } = get();
     set({ isLoading: true, error: null });
@@ -48,13 +51,13 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
     try {
       const completePost: Post = {
         ...newPost,
+        serverId: newPost.serverId || crypto.randomUUID(),
         status: newPost.status || 'pending',
       };
 
-      const id = await db.posts.add(completePost);
-      const savedPost: Post = { ...completePost, id };
+      await db.posts.put(completePost);
 
-      const newPosts = [savedPost, ...posts];
+      const newPosts = [completePost, ...posts];
       const sortedPosts = sortPosts(newPosts);
 
       set({
@@ -64,7 +67,7 @@ export const createPostSlice: StateCreator<StoreState, [], [], PostSlice> = (
       await db.localChanges.add({
         type: 'create',
         entity: 'post',
-        payload: savedPost,
+        payload: completePost,
       });
     } catch (e) {
       console.error('Error adding post:', e);

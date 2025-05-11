@@ -3,12 +3,13 @@ import { Post } from 'src/types';
 import { LocalChange } from 'src/db/types.ts';
 
 export class OffthreadDB extends Dexie {
-  posts!: Table<Post, number>;
+  posts!: Table<Post, string>;
   localChanges!: Table<LocalChange, number>;
+
   constructor() {
     super('offthread');
-    this.version(4).stores({
-      posts: '++id, title, content, date, status',
+    this.version(10).stores({
+      posts: 'serverId, title, content, date, status',
       localChanges: '++id, type, entity',
     });
   }
