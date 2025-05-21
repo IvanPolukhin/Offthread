@@ -5,14 +5,14 @@ const PostList = () => {
 
   return (
     <div className="space-y-4 p-4">
-      {error && <div className="text-red-500">{error}</div>}
+      {error && <div className="text-destructive">{error}</div>}
       {posts.map((post) => (
         <div
           key={post.serverId}
-          className="rounded-xl bg-gray-100 p-4 dark:bg-zinc-800"
+          className="rounded-xl bg-card text-card-foreground p-4"
         >
           <h2 className="text-lg font-semibold">{post.title}</h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             {new Date(post.date).toLocaleString()}
           </p>
           <p className="mt-2">{post.content}</p>
@@ -21,7 +21,7 @@ const PostList = () => {
       <button
         onClick={fetchNextPage}
         disabled={isLoading}
-        className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        className="rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
       >
         {isLoading ? 'Loading...' : 'Load more'}
       </button>
