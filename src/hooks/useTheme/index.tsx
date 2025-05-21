@@ -1,30 +1,26 @@
-import { LocalStorageKeys, ThemeVariants } from 'src/types'
-import { useEffect, useState } from 'react'
+import { LocalStorageKeys, ThemeVariants } from 'src/types';
+import { useEffect, useState } from 'react';
 
 export const useTheme = () => {
   const [theme, setTheme] = useState<ThemeVariants>(
     (localStorage.getItem(LocalStorageKeys.THEME) as ThemeVariants) ||
-    ThemeVariants.DARK,
-  )
+      ThemeVariants.DARK,
+  );
 
   const handleSetTheme = (themeValue: ThemeVariants) => {
-    setTheme(themeValue)
-    localStorage.setItem(LocalStorageKeys.THEME, themeValue)
+    setTheme(themeValue);
+    localStorage.setItem(LocalStorageKeys.THEME, themeValue);
 
     if (themeValue === ThemeVariants.DARK) {
-      document.documentElement.classList.add(ThemeVariants.DARK)
-      document.documentElement.classList.remove(ThemeVariants.LIGHT)
-
-      return
+      document.documentElement.classList.add(ThemeVariants.DARK);
+    } else {
+      document.documentElement.classList.remove(ThemeVariants.DARK);
     }
-
-    document.documentElement.classList.add(ThemeVariants.LIGHT)
-    document.documentElement.classList.remove(ThemeVariants.DARK)
-  }
+  };
 
   useEffect(() => {
-    handleSetTheme(theme)
-  }, [])
+    handleSetTheme(theme);
+  }, [theme]);
 
-  return { theme, setTheme, handleSetTheme }
-}
+  return { theme, setTheme, handleSetTheme };
+};
