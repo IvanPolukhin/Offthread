@@ -1,12 +1,17 @@
 import { useSyncOnOnline } from 'src/hooks/useSyncOnOnline';
 import PostList from 'src/components/PostList';
 import AddPost from 'src/features/AddPost';
+import { useEffect } from 'react';
 
 function App() {
   useSyncOnOnline();
 
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
+
   return (
-    <main className="min-h-screen bg-white text-black dark:bg-zinc-900 dark:text-white">
+    <main className="bg-background text-foreground min-h-screen">
       <h1 className="p-4 text-2xl font-bold">Offthread</h1>
       <PostList />
       <AddPost />
