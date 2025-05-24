@@ -8,9 +8,7 @@ const ThemeProvider = ({ children }: Props) => {
   const themeData = useTheme();
 
   return (
-    <ThemeContext.Provider value={themeData}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={themeData}>{children}</ThemeContext.Provider>
   );
 };
 

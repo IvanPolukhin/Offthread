@@ -12,8 +12,10 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to={RoutePaths.LOGIN} state={{ from: location }} replace />;
-}
+    return (
+      <Navigate to={RoutePaths.LOGIN} state={{ from: location }} replace />
+    );
+  }
 
   return <>{children}</>;
 };
