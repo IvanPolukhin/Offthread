@@ -66,7 +66,7 @@ export const createSyncSlice: StateCreator<StoreState, [], [], SyncSlice> = (
 
       await db.posts.clear();
       for (const post of postsFromServer) {
-        await db.posts.add(post);
+        await db.posts.put(post);
       }
 
       const updatedPosts = await db.posts.toArray();
