@@ -10,20 +10,20 @@ const AddPost = () => {
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="w-full rounded border border-input bg-background p-2 text-foreground placeholder:text-muted-foreground"
+        className="border-input bg-background text-foreground placeholder:text-muted-foreground w-full rounded border p-2"
         required
       />
       <textarea
         placeholder="Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="w-full rounded border border-input bg-background p-2 text-foreground placeholder:text-muted-foreground"
+        className="border-input bg-background text-foreground placeholder:text-muted-foreground w-full rounded border p-2"
         required
       />
       <button
         type="submit"
         disabled={!title || !content}
-        className="rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+        className="bg-primary text-primary-foreground hover:bg-primary/90 rounded px-4 py-2"
       >
         Add Post
       </button>

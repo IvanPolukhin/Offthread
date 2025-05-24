@@ -9,10 +9,10 @@ const PostList = () => {
       {posts.map((post) => (
         <div
           key={post.serverId}
-          className="rounded-xl bg-card text-card-foreground p-4"
+          className="bg-card text-card-foreground rounded-xl p-4"
         >
           <h2 className="text-lg font-semibold">{post.title}</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {new Date(post.date).toLocaleString()}
           </p>
           <p className="mt-2">{post.content}</p>
@@ -21,7 +21,7 @@ const PostList = () => {
       <button
         onClick={fetchNextPage}
         disabled={isLoading}
-        className="rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+        className="bg-primary text-primary-foreground hover:bg-primary/90 rounded px-4 py-2"
       >
         {isLoading ? 'Loading...' : 'Load more'}
       </button>

@@ -2,7 +2,7 @@ import { useLogin } from 'src/pages/Login/useLogin.ts';
 import { Button } from 'src/components/ui/button.tsx';
 
 const Login = () => {
-const {login, isLoggingIn, error} = useLogin()
+  const { login, isLoggingIn, error } = useLogin();
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -12,7 +12,7 @@ const {login, isLoggingIn, error} = useLogin()
           {isLoggingIn ? 'Signing in...' : 'Sign in with Google'}
         </Button>
         {error && (
-          <p className="text-sm text-red-500 mt-2">
+          <p className="mt-2 text-sm text-red-500">
             Login error: {error.message}
           </p>
         )}
