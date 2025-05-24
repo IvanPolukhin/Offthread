@@ -1,22 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { auth } from 'src/api';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 export const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    setIsAuthenticated(!!token);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
 
-  const login = (token: string) => {
-      localStorage.setItem('auth_token', token);
-      setIsAuthenticated(true);
-  }
-
-  const logout = () => {
-    localStorage.removeItem('auth_token');
-    setIsAuthenticated(false);
-  }
-
-  return { isAuthenticated, login, logout };
+  return { user, isAuthenticated: !!user, loading };
 };
