@@ -8,12 +8,12 @@ import {
 } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDmjomOS8tCvMFmp-5knCB81-UNXdF-TW8',
-  authDomain: 'offthread-8c413.firebaseapp.com',
-  projectId: 'offthread-8c413',
-  storageBucket: 'offthread-8c413.firebasestorage.app',
-  messagingSenderId: '730360421693',
-  appId: '1:730360421693:web:b599bf1368f3833937b954',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
